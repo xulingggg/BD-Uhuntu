@@ -1,0 +1,67 @@
+source ~/.bashrc
+start-dfs.sh && start-yarn.sh
+jps
+
+##Commands from history:
+
+  168  cd /usr/local/hadoop-ecosystem/hadoop-2.9.2
+  169  bin/hdfs dfs -ls /
+  170  bin/hdfs dfs -ls
+  171  bin/hdfs dfs -ls /
+  172  hdfs dfs ls
+  173  hdfs dfs -ls
+  174  hdfs dfs -ls /
+  175  bin/hdfs dfs -ls /
+  176  bin/hdfs dfs -mkdir temp
+  177  bin/hdfs dfs -mkdir /temp
+  178  bin/hdfs dfs -mkdir temp2
+  179  bin/hdfs dfs  -touchz /temp/temp.txt
+  180  cd ~
+  181  pwd
+  182  cd /home/hadoop
+  183  mkdir tempToDelete
+  184  touch /tempToDelete/tempToDelete.txt
+  185  cd tempToDelete
+  186  touch tempTodelete.txt
+  187  cd /usr/local/hadoop-ecosystem/hadoop-2.9.2
+  188  bin/hdfs dfs -copyFromLocal ../home/hadoop/tempTodelete/tempToDelete.txt /temp
+  189  bin/hdfs dfs -put /home/hadoop/tempToDelete/tempTodelete.txt /temp
+  190  bin/hdfs dfs -copyFromLocal /home/hadoop/tempToDelete/tempTodelete.txt /temp
+  191  bin/dhfs dfs -lsr /temp
+  192  bin/hdfs dfs -lsr /temp
+  193  bin/hdfs dfs -cat /temp/temp.txt
+  194  bin/hdfs dfs -appendToFile /temp/temp.txt 
+  195  bin/hdfs dfs -copyToLocal /temp/temp.txt /home/hadoop/tempToDelete
+  196  ls ../home/hadoop/tempToDelete
+  197  ls /home/hadoop/tempToDelete
+  198  ls ../tempToDelete
+  199  ls ../local/tempToDelete
+  200  ls /home/hadoop/tempToDelete
+  201  bin/hdfs dfs -moveFromLocal /home/hadoop/tempToDelete/tempTodelete.txt /temp
+  202  touch /home/hadoop/tempToDelete/tempTodelete2.txt
+  203  touch /home/hadoop/tempToDelete/tempTodelete3.txt
+  204  ls /home/hadoop/tempToDelete
+  205  bin/hdfs dfs -moveFromLocal /home/hadoop/tempToDelete/tempTodelete2.txt /temp
+  206  bin/hdfs dfs -ls /temp
+  207  bin/hdfs dfs -mkdir /temp_copied
+  208  bin/hdfs dfs -ls
+  209  bin/hdfs dfs -cp /temp /temp_copied
+  210  bin/hdfs dfs -ls /temp_copied
+  211  bin/hdfs dfs -ls /temp_copied/temp
+  212  bin/hdfs dfs -touchz temp/tempTodelete4.txt
+  213  bin/hdfs dfs -rmr /temp_copied/temp/temp.txt
+  214  bin/hdfs dfs -rm -r /temp_copied/temp/tempTodelete.txt
+  215  bin/hdfs dfs -du /temp_copied
+  216  bin/hdfs dfs -dus /temp
+  217  bin/dhfs dfs du -s /temp
+  218  bin/dhfs dfs -du -s /temp
+  219  bin hdfs dfs du -s /temp
+  220  bin/hdfs dfs du -s /temp
+  221  bin/hdfs dfs -du -s /temp
+  222  bin/hdfs dfs -stat /temp
+  223  bin/hdfs dfs -stat /temp_copied
+  224  clear
+  225  hdfs dfs -ls
+  226  hdfs dfs -ls /
+  227  history
+
