@@ -1,0 +1,1079 @@
+hadoop@ubuntudev:~$ sqoop job --list
+Warning: /usr/lib/hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/lib/hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Available jobs:
+hadoop@ubuntudev:~$ sqoop job --create myjob \
+> --import \
+> --connect jdbc:mysql://localhost/sqoopdb \
+> --username root \
+> --password root \
+> --table emp -m 1 \
+> --target-dir /user/input/emp10
+Warning: /usr/lib/hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/lib/hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+21/03/14 21:24:58 ERROR tool.BaseSqoopTool: Error parsing arguments for job:
+21/03/14 21:24:58 ERROR tool.BaseSqoopTool: Unrecognized argument: --import
+21/03/14 21:24:58 ERROR tool.BaseSqoopTool: Unrecognized argument: --connect
+21/03/14 21:24:58 ERROR tool.BaseSqoopTool: Unrecognized argument: jdbc:mysql://localhost/sqoopdb
+21/03/14 21:24:58 ERROR tool.BaseSqoopTool: Unrecognized argument: --username
+21/03/14 21:24:58 ERROR tool.BaseSqoopTool: Unrecognized argument: root
+21/03/14 21:24:58 ERROR tool.BaseSqoopTool: Unrecognized argument: --password
+21/03/14 21:24:58 ERROR tool.BaseSqoopTool: Unrecognized argument: root
+21/03/14 21:24:58 ERROR tool.BaseSqoopTool: Unrecognized argument: --table
+21/03/14 21:24:58 ERROR tool.BaseSqoopTool: Unrecognized argument: emp
+21/03/14 21:24:58 ERROR tool.BaseSqoopTool: Unrecognized argument: -m
+21/03/14 21:24:58 ERROR tool.BaseSqoopTool: Unrecognized argument: 1
+21/03/14 21:24:58 ERROR tool.BaseSqoopTool: Unrecognized argument: --target-dir
+21/03/14 21:24:58 ERROR tool.BaseSqoopTool: Unrecognized argument: /user/input/emp10
+
+Try --help for usage instructions.
+usage: sqoop job [GENERIC-ARGS] [JOB-ARGS] [-- [<tool-name>] [TOOL-ARGS]]
+
+Job management arguments:
+   --create <job-id>            Create a new saved job
+   --delete <job-id>            Delete a saved job
+   --exec <job-id>              Run a saved job
+   --help                       Print usage instructions
+   --list                       List saved jobs
+   --meta-connect <jdbc-uri>    Specify JDBC connect string for the
+                                metastore
+   --show <job-id>              Show the parameters for a saved job
+   --verbose                    Print more information while working
+
+Generic Hadoop command-line arguments:
+(must preceed any tool-specific arguments)
+Generic options supported are:
+-conf <configuration file>        specify an application configuration file
+-D <property=value>               define a value for a given property
+-fs <file:///|hdfs://namenode:port> specify default filesystem URL to use, overrides 'fs.defaultFS' property from configurations.
+-jt <local|resourcemanager:port>  specify a ResourceManager
+-files <file1,...>                specify a comma-separated list of files to be copied to the map reduce cluster
+-libjars <jar1,...>               specify a comma-separated list of jar files to be included in the classpath
+-archives <archive1,...>          specify a comma-separated list of archives to be unarchived on the compute machines
+
+The general command line syntax is:
+command [genericOptions] [commandOptions]
+
+hadoop@ubuntudev:~$ sqoop job --create myjob \
+> -- import \
+> --connect jdbc:mysql://localhost/sqoopdb \
+> --table emp -m 1 \
+> --target-dir /user/input/emp2
+Warning: /usr/lib/hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/lib/hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+hadoop@ubuntudev:~$ hdfs dfs -ls /user/input
+ls: `/user/input': No such file or directory
+hadoop@ubuntudev:~$ sqoop job --list
+Warning: /usr/lib/hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/lib/hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Available jobs:
+  myjob
+hadoop@ubuntudev:~$ sqoop job --exec myjob -- --username root -P
+Warning: /usr/lib/hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/lib/hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Enter password: 
+21/03/14 21:47:09 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+21/03/14 21:47:09 INFO tool.CodeGenTool: Beginning code generation
+Sun Mar 14 21:47:09 PDT 2021 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+21/03/14 21:47:10 ERROR manager.SqlManager: Error executing statement: java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:864)
+	at com.mysql.jdbc.MysqlIO.proceedHandshakeWithPluggableAuthentication(MysqlIO.java:1707)
+	at com.mysql.jdbc.MysqlIO.doHandshake(MysqlIO.java:1217)
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2189)
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2220)
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2015)
+	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:768)
+	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:47)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:385)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:323)
+	at java.sql.DriverManager.getConnection(DriverManager.java:664)
+	at java.sql.DriverManager.getConnection(DriverManager.java:247)
+	at org.apache.sqoop.manager.SqlManager.makeConnection(SqlManager.java:801)
+	at org.apache.sqoop.manager.GenericJdbcManager.getConnection(GenericJdbcManager.java:52)
+	at org.apache.sqoop.manager.SqlManager.execute(SqlManager.java:660)
+	at org.apache.sqoop.manager.SqlManager.execute(SqlManager.java:683)
+	at org.apache.sqoop.manager.SqlManager.getColumnTypesForRawQuery(SqlManager.java:240)
+	at org.apache.sqoop.manager.SqlManager.getColumnTypes(SqlManager.java:223)
+	at org.apache.sqoop.manager.ConnManager.getColumnTypes(ConnManager.java:347)
+	at org.apache.sqoop.orm.ClassWriter.getColumnTypes(ClassWriter.java:1277)
+	at org.apache.sqoop.orm.ClassWriter.generate(ClassWriter.java:1089)
+	at org.apache.sqoop.tool.CodeGenTool.generateORM(CodeGenTool.java:96)
+	at org.apache.sqoop.tool.ImportTool.importTable(ImportTool.java:396)
+	at org.apache.sqoop.tool.ImportTool.run(ImportTool.java:502)
+	at org.apache.sqoop.tool.JobTool.execJob(JobTool.java:228)
+	at org.apache.sqoop.tool.JobTool.run(JobTool.java:283)
+	at org.apache.sqoop.Sqoop.run(Sqoop.java:145)
+	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:76)
+	at org.apache.sqoop.Sqoop.runSqoop(Sqoop.java:181)
+	at org.apache.sqoop.Sqoop.runTool(Sqoop.java:220)
+	at org.apache.sqoop.Sqoop.runTool(Sqoop.java:229)
+	at org.apache.sqoop.Sqoop.main(Sqoop.java:238)
+21/03/14 21:47:10 ERROR tool.ImportTool: Encountered IOException running import job: java.io.IOException: No columns to generate for ClassWriter
+	at org.apache.sqoop.orm.ClassWriter.generate(ClassWriter.java:1095)
+	at org.apache.sqoop.tool.CodeGenTool.generateORM(CodeGenTool.java:96)
+	at org.apache.sqoop.tool.ImportTool.importTable(ImportTool.java:396)
+	at org.apache.sqoop.tool.ImportTool.run(ImportTool.java:502)
+	at org.apache.sqoop.tool.JobTool.execJob(JobTool.java:228)
+	at org.apache.sqoop.tool.JobTool.run(JobTool.java:283)
+	at org.apache.sqoop.Sqoop.run(Sqoop.java:145)
+	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:76)
+	at org.apache.sqoop.Sqoop.runSqoop(Sqoop.java:181)
+	at org.apache.sqoop.Sqoop.runTool(Sqoop.java:220)
+	at org.apache.sqoop.Sqoop.runTool(Sqoop.java:229)
+	at org.apache.sqoop.Sqoop.main(Sqoop.java:238)
+
+hadoop@ubuntudev:~$ sqoop job --exec myjob -- --username root -password root
+Warning: /usr/lib/hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/lib/hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+21/03/14 21:47:41 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+21/03/14 21:47:41 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+21/03/14 21:47:41 INFO tool.CodeGenTool: Beginning code generation
+Sun Mar 14 21:47:41 PDT 2021 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+21/03/14 21:47:42 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 21:47:42 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 21:47:42 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop-ecosystem/hadoop-2.9.2
+Note: /tmp/sqoop-hadoop/compile/82e7a5e90aa909ef074d21d9a398f0be/emp.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+21/03/14 21:47:43 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hadoop/compile/82e7a5e90aa909ef074d21d9a398f0be/emp.jar
+21/03/14 21:47:43 WARN manager.MySQLManager: It looks like you are importing from mysql.
+21/03/14 21:47:43 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+21/03/14 21:47:43 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+21/03/14 21:47:43 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+21/03/14 21:47:43 INFO mapreduce.ImportJobBase: Beginning import of emp
+21/03/14 21:47:43 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+21/03/14 21:47:44 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+21/03/14 21:47:44 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+21/03/14 21:47:45 WARN hdfs.DataStreamer: Caught exception
+java.lang.InterruptedException
+	at java.lang.Object.wait(Native Method)
+	at java.lang.Thread.join(Thread.java:1252)
+	at java.lang.Thread.join(Thread.java:1326)
+	at org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:980)
+	at org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:630)
+	at org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:807)
+21/03/14 21:47:45 WARN hdfs.DataStreamer: Caught exception
+java.lang.InterruptedException
+	at java.lang.Object.wait(Native Method)
+	at java.lang.Thread.join(Thread.java:1252)
+	at java.lang.Thread.join(Thread.java:1326)
+	at org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:980)
+	at org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:630)
+	at org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:807)
+Sun Mar 14 21:47:45 PDT 2021 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+21/03/14 21:47:45 INFO mapreduce.JobSubmitter: number of splits:1
+21/03/14 21:47:46 INFO Configuration.deprecation: yarn.resourcemanager.system-metrics-publisher.enabled is deprecated. Instead, use yarn.system-metrics-publisher.enabled
+21/03/14 21:47:46 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1615764918239_0004
+21/03/14 21:47:46 INFO impl.YarnClientImpl: Submitted application application_1615764918239_0004
+21/03/14 21:47:46 INFO mapreduce.Job: The url to track the job: http://ubuntudev:8088/proxy/application_1615764918239_0004/
+21/03/14 21:47:46 INFO mapreduce.Job: Running job: job_1615764918239_0004
+21/03/14 21:47:53 INFO mapreduce.Job: Job job_1615764918239_0004 running in uber mode : false
+21/03/14 21:47:53 INFO mapreduce.Job:  map 0% reduce 0%
+21/03/14 21:47:58 INFO mapreduce.Job:  map 100% reduce 0%
+21/03/14 21:48:00 INFO mapreduce.Job: Job job_1615764918239_0004 completed successfully
+21/03/14 21:48:00 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=203962
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=87
+		HDFS: Number of bytes written=114
+		HDFS: Number of read operations=4
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=3474
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=3474
+		Total vcore-milliseconds taken by all map tasks=3474
+		Total megabyte-milliseconds taken by all map tasks=3557376
+	Map-Reduce Framework
+		Map input records=6
+		Map output records=6
+		Input split bytes=87
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=48
+		CPU time spent (ms)=930
+		Physical memory (bytes) snapshot=169406464
+		Virtual memory (bytes) snapshot=1866117120
+		Total committed heap usage (bytes)=142082048
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=114
+21/03/14 21:48:00 INFO mapreduce.ImportJobBase: Transferred 114 bytes in 15.8053 seconds (7.2128 bytes/sec)
+21/03/14 21:48:00 INFO mapreduce.ImportJobBase: Retrieved 6 records.
+hadoop@ubuntudev:~$ hdfs dfs -ls /user/input/emp2
+Found 2 items
+-rw-r--r--   1 hadoop supergroup          0 2021-03-14 21:47 /user/input/emp2/_SUCCESS
+-rw-r--r--   1 hadoop supergroup        114 2021-03-14 21:47 /user/input/emp2/part-m-00000
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp2
+cat: `/user/input/emp2': Is a directory
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp2/*
+101,abc,10000,f,11
+102,xyz,20000,f,12
+103,lmn,30000,m,12
+104,pqr,40000,f,13
+105,ghi,50000,m,11
+106,stu,60000,m,11
+hadoop@ubuntudev:~$ sqoop import \
+> --connect jdbc:mysql://localhost/sqoopdb \
+> --username root \
+> --password root \
+> --table emp \
+> --target-dir /user/input/emp1
+Warning: /usr/lib/hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/lib/hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+21/03/14 22:07:37 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+21/03/14 22:07:37 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+21/03/14 22:07:37 INFO tool.CodeGenTool: Beginning code generation
+Sun Mar 14 22:07:37 PDT 2021 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+21/03/14 22:07:38 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 22:07:38 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 22:07:38 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop-ecosystem/hadoop-2.9.2
+Note: /tmp/sqoop-hadoop/compile/ac2608d6d26d59e9e2dc6b865e879ec8/emp.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+21/03/14 22:07:39 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hadoop/compile/ac2608d6d26d59e9e2dc6b865e879ec8/emp.jar
+21/03/14 22:07:39 WARN manager.MySQLManager: It looks like you are importing from mysql.
+21/03/14 22:07:39 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+21/03/14 22:07:39 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+21/03/14 22:07:39 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+21/03/14 22:07:39 INFO mapreduce.ImportJobBase: Beginning import of emp
+21/03/14 22:07:39 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+21/03/14 22:07:40 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+21/03/14 22:07:40 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+21/03/14 22:07:41 WARN hdfs.DataStreamer: Caught exception
+java.lang.InterruptedException
+	at java.lang.Object.wait(Native Method)
+	at java.lang.Thread.join(Thread.java:1252)
+	at java.lang.Thread.join(Thread.java:1326)
+	at org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:980)
+	at org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:630)
+	at org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:807)
+21/03/14 22:07:41 WARN hdfs.DataStreamer: Caught exception
+java.lang.InterruptedException
+	at java.lang.Object.wait(Native Method)
+	at java.lang.Thread.join(Thread.java:1252)
+	at java.lang.Thread.join(Thread.java:1326)
+	at org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:980)
+	at org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:630)
+	at org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:807)
+21/03/14 22:07:41 WARN hdfs.DataStreamer: Caught exception
+java.lang.InterruptedException
+	at java.lang.Object.wait(Native Method)
+	at java.lang.Thread.join(Thread.java:1252)
+	at java.lang.Thread.join(Thread.java:1326)
+	at org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:980)
+	at org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:630)
+	at org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:807)
+Sun Mar 14 22:07:41 PDT 2021 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+21/03/14 22:07:41 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(`id`), MAX(`id`) FROM `emp`
+21/03/14 22:07:41 INFO mapreduce.JobSubmitter: number of splits:4
+21/03/14 22:07:42 INFO Configuration.deprecation: yarn.resourcemanager.system-metrics-publisher.enabled is deprecated. Instead, use yarn.system-metrics-publisher.enabled
+21/03/14 22:07:42 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1615764918239_0005
+21/03/14 22:07:42 INFO impl.YarnClientImpl: Submitted application application_1615764918239_0005
+21/03/14 22:07:42 INFO mapreduce.Job: The url to track the job: http://ubuntudev:8088/proxy/application_1615764918239_0005/
+21/03/14 22:07:42 INFO mapreduce.Job: Running job: job_1615764918239_0005
+21/03/14 22:07:49 INFO mapreduce.Job: Job job_1615764918239_0005 running in uber mode : false
+21/03/14 22:07:49 INFO mapreduce.Job:  map 0% reduce 0%
+21/03/14 22:08:04 INFO mapreduce.Job:  map 25% reduce 0%
+21/03/14 22:08:06 INFO mapreduce.Job:  map 50% reduce 0%
+21/03/14 22:08:08 INFO mapreduce.Job:  map 100% reduce 0%
+21/03/14 22:08:09 INFO mapreduce.Job: Job job_1615764918239_0005 completed successfully
+21/03/14 22:08:10 INFO mapreduce.Job: Counters: 31
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=814772
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=409
+		HDFS: Number of bytes written=114
+		HDFS: Number of read operations=16
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=8
+	Job Counters 
+		Killed map tasks=1
+		Launched map tasks=4
+		Other local map tasks=4
+		Total time spent by all maps in occupied slots (ms)=56336
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=56336
+		Total vcore-milliseconds taken by all map tasks=56336
+		Total megabyte-milliseconds taken by all map tasks=57688064
+	Map-Reduce Framework
+		Map input records=6
+		Map output records=6
+		Input split bytes=409
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=1086
+		CPU time spent (ms)=4840
+		Physical memory (bytes) snapshot=732696576
+		Virtual memory (bytes) snapshot=7463845888
+		Total committed heap usage (bytes)=568328192
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=114
+21/03/14 22:08:10 INFO mapreduce.ImportJobBase: Transferred 114 bytes in 29.5009 seconds (3.8643 bytes/sec)
+21/03/14 22:08:10 INFO mapreduce.ImportJobBase: Retrieved 6 records.
+hadoop@ubuntudev:~$ hdfs dfs -ls /user/input/emp1
+Found 5 items
+-rw-r--r--   1 hadoop supergroup          0 2021-03-14 22:08 /user/input/emp1/_SUCCESS
+-rw-r--r--   1 hadoop supergroup         38 2021-03-14 22:08 /user/input/emp1/part-m-00000
+-rw-r--r--   1 hadoop supergroup         19 2021-03-14 22:08 /user/input/emp1/part-m-00001
+-rw-r--r--   1 hadoop supergroup         19 2021-03-14 22:08 /user/input/emp1/part-m-00002
+-rw-r--r--   1 hadoop supergroup         38 2021-03-14 22:08 /user/input/emp1/part-m-00003
+hadoop@ubuntudev:~$ hdfs dfs -ls /user/input/emp1//part-m-00000
+-rw-r--r--   1 hadoop supergroup         38 2021-03-14 22:08 /user/input/emp1/part-m-00000
+hadoop@ubuntudev:~$ hdfs dfs -ls /user/input/emp1//part-m-00001
+-rw-r--r--   1 hadoop supergroup         19 2021-03-14 22:08 /user/input/emp1/part-m-00001
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp1//part-m-00000
+101,abc,10000,f,11
+102,xyz,20000,f,12
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp1//part-m-00001
+103,lmn,30000,m,12
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp1//part-m-00002
+104,pqr,40000,f,13
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp1//part-m-00003
+105,ghi,50000,m,11
+106,stu,60000,m,11
+
+hadoop@ubuntudev:~$ sqoop import \
+> --connect jdbc:mysql://localhost/testdb \
+> --username root \
+> --password root \
+> --m 1 \
+> --table emp \
+> --target-dir /user/input/emp2
+Warning: /usr/lib/hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/lib/hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+21/03/14 22:17:45 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+21/03/14 22:17:45 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+21/03/14 22:17:45 INFO tool.CodeGenTool: Beginning code generation
+Sun Mar 14 22:17:45 PDT 2021 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+21/03/14 22:17:46 ERROR manager.SqlManager: Error executing statement: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown database 'testdb'
+com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown database 'testdb'
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)
+	at com.mysql.jdbc.Util.getInstance(Util.java:408)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:944)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:864)
+	at com.mysql.jdbc.MysqlIO.proceedHandshakeWithPluggableAuthentication(MysqlIO.java:1707)
+	at com.mysql.jdbc.MysqlIO.doHandshake(MysqlIO.java:1217)
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2189)
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2220)
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2015)
+	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:768)
+	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:47)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:385)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:323)
+	at java.sql.DriverManager.getConnection(DriverManager.java:664)
+	at java.sql.DriverManager.getConnection(DriverManager.java:247)
+	at org.apache.sqoop.manager.SqlManager.makeConnection(SqlManager.java:801)
+	at org.apache.sqoop.manager.GenericJdbcManager.getConnection(GenericJdbcManager.java:52)
+	at org.apache.sqoop.manager.SqlManager.execute(SqlManager.java:660)
+	at org.apache.sqoop.manager.SqlManager.execute(SqlManager.java:683)
+	at org.apache.sqoop.manager.SqlManager.getColumnTypesForRawQuery(SqlManager.java:240)
+	at org.apache.sqoop.manager.SqlManager.getColumnTypes(SqlManager.java:223)
+	at org.apache.sqoop.manager.ConnManager.getColumnTypes(ConnManager.java:347)
+	at org.apache.sqoop.orm.ClassWriter.getColumnTypes(ClassWriter.java:1277)
+	at org.apache.sqoop.orm.ClassWriter.generate(ClassWriter.java:1089)
+	at org.apache.sqoop.tool.CodeGenTool.generateORM(CodeGenTool.java:96)
+	at org.apache.sqoop.tool.ImportTool.importTable(ImportTool.java:396)
+	at org.apache.sqoop.tool.ImportTool.run(ImportTool.java:502)
+	at org.apache.sqoop.Sqoop.run(Sqoop.java:145)
+	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:76)
+	at org.apache.sqoop.Sqoop.runSqoop(Sqoop.java:181)
+	at org.apache.sqoop.Sqoop.runTool(Sqoop.java:220)
+	at org.apache.sqoop.Sqoop.runTool(Sqoop.java:229)
+	at org.apache.sqoop.Sqoop.main(Sqoop.java:238)
+21/03/14 22:17:46 ERROR tool.ImportTool: Encountered IOException running import job: java.io.IOException: No columns to generate for ClassWriter
+	at org.apache.sqoop.orm.ClassWriter.generate(ClassWriter.java:1095)
+	at org.apache.sqoop.tool.CodeGenTool.generateORM(CodeGenTool.java:96)
+	at org.apache.sqoop.tool.ImportTool.importTable(ImportTool.java:396)
+	at org.apache.sqoop.tool.ImportTool.run(ImportTool.java:502)
+	at org.apache.sqoop.Sqoop.run(Sqoop.java:145)
+	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:76)
+	at org.apache.sqoop.Sqoop.runSqoop(Sqoop.java:181)
+	at org.apache.sqoop.Sqoop.runTool(Sqoop.java:220)
+	at org.apache.sqoop.Sqoop.runTool(Sqoop.java:229)
+	at org.apache.sqoop.Sqoop.main(Sqoop.java:238)
+
+hadoop@ubuntudev:~$ mysql -uroot -proot
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 52
+Server version: 8.0.23-0ubuntu0.20.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database testdb;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use testdb;
+Database changed
+
+mysql> show database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sqoopdb            |
+| sys                |
+| testdb             |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> create table emp(id int, name varchar(10));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql>  insert into emp value(100, "Ling");
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into emp value(101, "Shu");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into emp value(102, "Wei");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> ^DBye
+
+hadoop@ubuntudev:~$ sqoop import --connect jdbc:mysql://localhost/testdb --username root --password root --m 1 --table emp --target-dir /user/input/emp2
+Warning: /usr/lib/hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/lib/hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+21/03/14 22:24:38 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+21/03/14 22:24:38 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+21/03/14 22:24:38 INFO tool.CodeGenTool: Beginning code generation
+Sun Mar 14 22:24:38 PDT 2021 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+21/03/14 22:24:39 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 22:24:39 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 22:24:39 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop-ecosystem/hadoop-2.9.2
+Note: /tmp/sqoop-hadoop/compile/4d544f11e0d809b3993a305142cf6d72/emp.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+21/03/14 22:24:40 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hadoop/compile/4d544f11e0d809b3993a305142cf6d72/emp.jar
+21/03/14 22:24:40 WARN manager.MySQLManager: It looks like you are importing from mysql.
+21/03/14 22:24:40 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+21/03/14 22:24:40 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+21/03/14 22:24:40 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+21/03/14 22:24:40 INFO mapreduce.ImportJobBase: Beginning import of emp
+21/03/14 22:24:40 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+21/03/14 22:24:41 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+21/03/14 22:24:41 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+21/03/14 22:24:42 ERROR tool.ImportTool: Encountered IOException running import job: org.apache.hadoop.mapred.FileAlreadyExistsException: Output directory hdfs://localhost:9000/user/input/emp2 already exists
+	at org.apache.hadoop.mapreduce.lib.output.FileOutputFormat.checkOutputSpecs(FileOutputFormat.java:146)
+	at org.apache.hadoop.mapreduce.JobSubmitter.checkSpecs(JobSubmitter.java:279)
+	at org.apache.hadoop.mapreduce.JobSubmitter.submitJobInternal(JobSubmitter.java:145)
+	at org.apache.hadoop.mapreduce.Job$11.run(Job.java:1570)
+	at org.apache.hadoop.mapreduce.Job$11.run(Job.java:1567)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1893)
+	at org.apache.hadoop.mapreduce.Job.submit(Job.java:1567)
+	at org.apache.hadoop.mapreduce.Job.waitForCompletion(Job.java:1588)
+	at org.apache.sqoop.mapreduce.ImportJobBase.doSubmitJob(ImportJobBase.java:186)
+	at org.apache.sqoop.mapreduce.ImportJobBase.runJob(ImportJobBase.java:159)
+	at org.apache.sqoop.mapreduce.ImportJobBase.runImport(ImportJobBase.java:239)
+	at org.apache.sqoop.manager.SqlManager.importTable(SqlManager.java:600)
+	at org.apache.sqoop.manager.MySQLManager.importTable(MySQLManager.java:118)
+	at org.apache.sqoop.tool.ImportTool.importTable(ImportTool.java:413)
+	at org.apache.sqoop.tool.ImportTool.run(ImportTool.java:502)
+	at org.apache.sqoop.Sqoop.run(Sqoop.java:145)
+	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:76)
+	at org.apache.sqoop.Sqoop.runSqoop(Sqoop.java:181)
+	at org.apache.sqoop.Sqoop.runTool(Sqoop.java:220)
+	at org.apache.sqoop.Sqoop.runTool(Sqoop.java:229)
+	at org.apache.sqoop.Sqoop.main(Sqoop.java:238)
+
+hadoop@ubuntudev:~$ hdfs dfs -ls /user/input/emp2
+Found 2 items
+-rw-r--r--   1 hadoop supergroup          0 2021-03-14 21:47 /user/input/emp2/_SUCCESS
+-rw-r--r--   1 hadoop supergroup        114 2021-03-14 21:47 /user/input/emp2/part-m-00000
+
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp2/*
+101,abc,10000,f,11
+102,xyz,20000,f,12
+103,lmn,30000,m,12
+104,pqr,40000,f,13
+105,ghi,50000,m,11
+106,stu,60000,m,11
+hadoop@ubuntudev:~$ sqoop import \
+> --connect jdbc:mysql://localhost/sqoopdb \
+> --username root \
+> --password root \
+> --table emp -m 1 --where 'gender="f"' \
+> --target-dir /user/input/emp3
+Warning: /usr/lib/hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/lib/hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+21/03/14 22:28:28 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+21/03/14 22:28:28 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+21/03/14 22:28:28 INFO tool.CodeGenTool: Beginning code generation
+Sun Mar 14 22:28:28 PDT 2021 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+21/03/14 22:28:29 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 22:28:29 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 22:28:29 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop-ecosystem/hadoop-2.9.2
+Note: /tmp/sqoop-hadoop/compile/27684b7195d65bea33aca5c344d1ff06/emp.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+21/03/14 22:28:30 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hadoop/compile/27684b7195d65bea33aca5c344d1ff06/emp.jar
+21/03/14 22:28:30 WARN manager.MySQLManager: It looks like you are importing from mysql.
+21/03/14 22:28:30 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+21/03/14 22:28:30 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+21/03/14 22:28:30 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+21/03/14 22:28:30 INFO mapreduce.ImportJobBase: Beginning import of emp
+21/03/14 22:28:30 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+21/03/14 22:28:31 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+21/03/14 22:28:31 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+Sun Mar 14 22:28:32 PDT 2021 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+21/03/14 22:28:32 INFO mapreduce.JobSubmitter: number of splits:1
+21/03/14 22:28:32 INFO Configuration.deprecation: yarn.resourcemanager.system-metrics-publisher.enabled is deprecated. Instead, use yarn.system-metrics-publisher.enabled
+21/03/14 22:28:33 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1615764918239_0006
+21/03/14 22:28:33 INFO impl.YarnClientImpl: Submitted application application_1615764918239_0006
+21/03/14 22:28:33 INFO mapreduce.Job: The url to track the job: http://ubuntudev:8088/proxy/application_1615764918239_0006/
+21/03/14 22:28:33 INFO mapreduce.Job: Running job: job_1615764918239_0006
+21/03/14 22:28:40 INFO mapreduce.Job: Job job_1615764918239_0006 running in uber mode : false
+21/03/14 22:28:40 INFO mapreduce.Job:  map 0% reduce 0%
+21/03/14 22:28:46 INFO mapreduce.Job:  map 100% reduce 0%
+21/03/14 22:28:46 INFO mapreduce.Job: Job job_1615764918239_0006 completed successfully
+21/03/14 22:28:46 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=203864
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=87
+		HDFS: Number of bytes written=57
+		HDFS: Number of read operations=4
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=3557
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=3557
+		Total vcore-milliseconds taken by all map tasks=3557
+		Total megabyte-milliseconds taken by all map tasks=3642368
+	Map-Reduce Framework
+		Map input records=3
+		Map output records=3
+		Input split bytes=87
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=58
+		CPU time spent (ms)=1070
+		Physical memory (bytes) snapshot=189816832
+		Virtual memory (bytes) snapshot=1865961472
+		Total committed heap usage (bytes)=142082048
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=57
+21/03/14 22:28:46 INFO mapreduce.ImportJobBase: Transferred 57 bytes in 15.3677 seconds (3.7091 bytes/sec)
+21/03/14 22:28:46 INFO mapreduce.ImportJobBase: Retrieved 3 records.
+hadoop@ubuntudev:~$ hdfs dfs -ls /user/input/emp3
+Found 2 items
+-rw-r--r--   1 hadoop supergroup          0 2021-03-14 22:28 /user/input/emp3/_SUCCESS
+-rw-r--r--   1 hadoop supergroup         57 2021-03-14 22:28 /user/input/emp3/part-m-00000
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp3/*
+101,abc,10000,f,11
+102,xyz,20000,f,12
+104,pqr,40000,f,13
+hadoop@ubuntudev:~$ sqoop import \
+> --connect jdbc:mysql://localhost/sqoopdb \
+> --username root \
+> --password root \
+> --table emp --where 'gender="m"' \
+> --target-dir /user/input/emp4
+Warning: /usr/lib/hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/lib/hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+21/03/14 22:31:20 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+21/03/14 22:31:20 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+21/03/14 22:31:20 INFO tool.CodeGenTool: Beginning code generation
+Sun Mar 14 22:31:20 PDT 2021 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+21/03/14 22:31:21 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 22:31:21 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 22:31:21 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop-ecosystem/hadoop-2.9.2
+Note: /tmp/sqoop-hadoop/compile/2e0876e40c5e2cb807d9f3d87a635308/emp.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+21/03/14 22:31:22 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hadoop/compile/2e0876e40c5e2cb807d9f3d87a635308/emp.jar
+21/03/14 22:31:22 WARN manager.MySQLManager: It looks like you are importing from mysql.
+21/03/14 22:31:22 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+21/03/14 22:31:22 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+21/03/14 22:31:22 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+21/03/14 22:31:22 INFO mapreduce.ImportJobBase: Beginning import of emp
+21/03/14 22:31:22 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+21/03/14 22:31:23 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+21/03/14 22:31:23 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+21/03/14 22:31:24 WARN hdfs.DataStreamer: Caught exception
+java.lang.InterruptedException
+	at java.lang.Object.wait(Native Method)
+	at java.lang.Thread.join(Thread.java:1252)
+	at java.lang.Thread.join(Thread.java:1326)
+	at org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:980)
+	at org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:630)
+	at org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:807)
+Sun Mar 14 22:31:24 PDT 2021 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+21/03/14 22:31:25 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(`id`), MAX(`id`) FROM `emp` WHERE ( gender="m" )
+21/03/14 22:31:25 INFO mapreduce.JobSubmitter: number of splits:4
+21/03/14 22:31:25 INFO Configuration.deprecation: yarn.resourcemanager.system-metrics-publisher.enabled is deprecated. Instead, use yarn.system-metrics-publisher.enabled
+21/03/14 22:31:25 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1615764918239_0007
+21/03/14 22:31:25 INFO impl.YarnClientImpl: Submitted application application_1615764918239_0007
+21/03/14 22:31:25 INFO mapreduce.Job: The url to track the job: http://ubuntudev:8088/proxy/application_1615764918239_0007/
+21/03/14 22:31:25 INFO mapreduce.Job: Running job: job_1615764918239_0007
+21/03/14 22:31:32 INFO mapreduce.Job: Job job_1615764918239_0007 running in uber mode : false
+21/03/14 22:31:32 INFO mapreduce.Job:  map 0% reduce 0%
+21/03/14 22:31:46 INFO mapreduce.Job:  map 25% reduce 0%
+21/03/14 22:31:49 INFO mapreduce.Job:  map 50% reduce 0%
+21/03/14 22:31:50 INFO mapreduce.Job:  map 100% reduce 0%
+21/03/14 22:31:50 INFO mapreduce.Job: Job job_1615764918239_0007 completed successfully
+21/03/14 22:31:51 INFO mapreduce.Job: Counters: 31
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=815456
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=409
+		HDFS: Number of bytes written=57
+		HDFS: Number of read operations=16
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=8
+	Job Counters 
+		Killed map tasks=1
+		Launched map tasks=4
+		Other local map tasks=4
+		Total time spent by all maps in occupied slots (ms)=52930
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=52930
+		Total vcore-milliseconds taken by all map tasks=52930
+		Total megabyte-milliseconds taken by all map tasks=54200320
+	Map-Reduce Framework
+		Map input records=3
+		Map output records=3
+		Input split bytes=409
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=777
+		CPU time spent (ms)=4240
+		Physical memory (bytes) snapshot=730509312
+		Virtual memory (bytes) snapshot=7463845888
+		Total committed heap usage (bytes)=568328192
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=57
+21/03/14 22:31:51 INFO mapreduce.ImportJobBase: Transferred 57 bytes in 27.5005 seconds (2.0727 bytes/sec)
+21/03/14 22:31:51 INFO mapreduce.ImportJobBase: Retrieved 3 records.
+hadoop@ubuntudev:~$ hdfs dfs -ls /user/input/emp4
+Found 5 items
+-rw-r--r--   1 hadoop supergroup          0 2021-03-14 22:31 /user/input/emp4/_SUCCESS
+-rw-r--r--   1 hadoop supergroup         19 2021-03-14 22:31 /user/input/emp4/part-m-00000
+-rw-r--r--   1 hadoop supergroup          0 2021-03-14 22:31 /user/input/emp4/part-m-00001
+-rw-r--r--   1 hadoop supergroup         19 2021-03-14 22:31 /user/input/emp4/part-m-00002
+-rw-r--r--   1 hadoop supergroup         19 2021-03-14 22:31 /user/input/emp4/part-m-00003
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp4/part-m-00000
+103,lmn,30000,m,12
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp4/part-m-00001
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp4/part-m-00002
+105,ghi,50000,m,11
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp4/part-m-00003
+106,stu,60000,m,11
+hadoop@ubuntudev:~$ sqoop import \
+> --connect jdbc:mysql://localhost/sqoopdb \
+> --username root \
+> --password root \
+> --table emp -m 1 --columns id,name,sal \
+> --target-dir /user/input/emp5
+Warning: /usr/lib/hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/lib/hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+21/03/14 22:36:21 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+21/03/14 22:36:21 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+21/03/14 22:36:21 INFO tool.CodeGenTool: Beginning code generation
+Sun Mar 14 22:36:22 PDT 2021 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+21/03/14 22:36:22 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 22:36:22 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 22:36:22 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop-ecosystem/hadoop-2.9.2
+Note: /tmp/sqoop-hadoop/compile/24f6d257ccb42188300ece806576cbc7/emp.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+21/03/14 22:36:24 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hadoop/compile/24f6d257ccb42188300ece806576cbc7/emp.jar
+21/03/14 22:36:24 WARN manager.MySQLManager: It looks like you are importing from mysql.
+21/03/14 22:36:24 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+21/03/14 22:36:24 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+21/03/14 22:36:24 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+21/03/14 22:36:24 INFO mapreduce.ImportJobBase: Beginning import of emp
+21/03/14 22:36:24 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+21/03/14 22:36:25 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+21/03/14 22:36:25 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+Sun Mar 14 22:36:26 PDT 2021 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+21/03/14 22:36:26 INFO mapreduce.JobSubmitter: number of splits:1
+21/03/14 22:36:27 INFO Configuration.deprecation: yarn.resourcemanager.system-metrics-publisher.enabled is deprecated. Instead, use yarn.system-metrics-publisher.enabled
+21/03/14 22:36:27 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1615764918239_0008
+21/03/14 22:36:27 INFO impl.YarnClientImpl: Submitted application application_1615764918239_0008
+21/03/14 22:36:27 INFO mapreduce.Job: The url to track the job: http://ubuntudev:8088/proxy/application_1615764918239_0008/
+21/03/14 22:36:27 INFO mapreduce.Job: Running job: job_1615764918239_0008
+21/03/14 22:36:34 INFO mapreduce.Job: Job job_1615764918239_0008 running in uber mode : false
+21/03/14 22:36:34 INFO mapreduce.Job:  map 0% reduce 0%
+21/03/14 22:36:40 INFO mapreduce.Job:  map 100% reduce 0%
+21/03/14 22:36:41 INFO mapreduce.Job: Job job_1615764918239_0008 completed successfully
+21/03/14 22:36:42 INFO mapreduce.Job: Counters: 30
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=203678
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=87
+		HDFS: Number of bytes written=84
+		HDFS: Number of read operations=4
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=3837
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=3837
+		Total vcore-milliseconds taken by all map tasks=3837
+		Total megabyte-milliseconds taken by all map tasks=3929088
+	Map-Reduce Framework
+		Map input records=6
+		Map output records=6
+		Input split bytes=87
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=74
+		CPU time spent (ms)=1000
+		Physical memory (bytes) snapshot=186236928
+		Virtual memory (bytes) snapshot=1865961472
+		Total committed heap usage (bytes)=142082048
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=84
+21/03/14 22:36:42 INFO mapreduce.ImportJobBase: Transferred 84 bytes in 16.8413 seconds (4.9877 bytes/sec)
+21/03/14 22:36:42 INFO mapreduce.ImportJobBase: Retrieved 6 records.
+hadoop@ubuntudev:~$ hdfs dfs -ls /user/input/emp5
+Found 2 items
+-rw-r--r--   1 hadoop supergroup          0 2021-03-14 22:36 /user/input/emp5/_SUCCESS
+-rw-r--r--   1 hadoop supergroup         84 2021-03-14 22:36 /user/input/emp5/part-m-00000
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp5/*
+101,abc,10000
+102,xyz,20000
+103,lmn,30000
+104,pqr,40000
+105,ghi,50000
+106,stu,60000
+hadoop@ubuntudev:~$ sqoop import \
+> --connect jdbc:mysql://localhost/sqoopdb \
+> --username root \
+> --password root \
+> --table emp  --columns id,name,sal --where 'sal>20000' \
+> --target-dir /user/input/emp6
+Warning: /usr/lib/hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/lib/hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+21/03/14 22:38:31 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+21/03/14 22:38:31 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+21/03/14 22:38:31 INFO tool.CodeGenTool: Beginning code generation
+Sun Mar 14 22:38:32 PDT 2021 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+21/03/14 22:38:32 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 22:38:32 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 22:38:32 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop-ecosystem/hadoop-2.9.2
+Note: /tmp/sqoop-hadoop/compile/76628174b679226a83642d7398a4a9f1/emp.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+21/03/14 22:38:34 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hadoop/compile/76628174b679226a83642d7398a4a9f1/emp.jar
+21/03/14 22:38:34 WARN manager.MySQLManager: It looks like you are importing from mysql.
+21/03/14 22:38:34 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+21/03/14 22:38:34 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+21/03/14 22:38:34 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+21/03/14 22:38:34 INFO mapreduce.ImportJobBase: Beginning import of emp
+21/03/14 22:38:34 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+21/03/14 22:38:35 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+21/03/14 22:38:35 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+21/03/14 22:38:36 WARN hdfs.DataStreamer: Caught exception
+java.lang.InterruptedException
+	at java.lang.Object.wait(Native Method)
+	at java.lang.Thread.join(Thread.java:1252)
+	at java.lang.Thread.join(Thread.java:1326)
+	at org.apache.hadoop.hdfs.DataStreamer.closeResponder(DataStreamer.java:980)
+	at org.apache.hadoop.hdfs.DataStreamer.endBlock(DataStreamer.java:630)
+	at org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:807)
+Sun Mar 14 22:38:36 PDT 2021 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+21/03/14 22:38:36 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(`id`), MAX(`id`) FROM `emp` WHERE ( sal>20000 )
+21/03/14 22:38:36 INFO mapreduce.JobSubmitter: number of splits:4
+21/03/14 22:38:36 INFO Configuration.deprecation: yarn.resourcemanager.system-metrics-publisher.enabled is deprecated. Instead, use yarn.system-metrics-publisher.enabled
+21/03/14 22:38:37 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1615764918239_0009
+21/03/14 22:38:37 INFO impl.YarnClientImpl: Submitted application application_1615764918239_0009
+21/03/14 22:38:37 INFO mapreduce.Job: The url to track the job: http://ubuntudev:8088/proxy/application_1615764918239_0009/
+21/03/14 22:38:37 INFO mapreduce.Job: Running job: job_1615764918239_0009
+21/03/14 22:38:44 INFO mapreduce.Job: Job job_1615764918239_0009 running in uber mode : false
+21/03/14 22:38:44 INFO mapreduce.Job:  map 0% reduce 0%
+21/03/14 22:38:57 INFO mapreduce.Job:  map 25% reduce 0%
+21/03/14 22:39:00 INFO mapreduce.Job:  map 50% reduce 0%
+21/03/14 22:39:01 INFO mapreduce.Job:  map 75% reduce 0%
+21/03/14 22:39:02 INFO mapreduce.Job:  map 100% reduce 0%
+21/03/14 22:39:02 INFO mapreduce.Job: Job job_1615764918239_0009 completed successfully
+21/03/14 22:39:02 INFO mapreduce.Job: Counters: 31
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=815404
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=409
+		HDFS: Number of bytes written=56
+		HDFS: Number of read operations=16
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=8
+	Job Counters 
+		Killed map tasks=1
+		Launched map tasks=4
+		Other local map tasks=4
+		Total time spent by all maps in occupied slots (ms)=50523
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=50523
+		Total vcore-milliseconds taken by all map tasks=50523
+		Total megabyte-milliseconds taken by all map tasks=51735552
+	Map-Reduce Framework
+		Map input records=4
+		Map output records=4
+		Input split bytes=409
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=803
+		CPU time spent (ms)=4390
+		Physical memory (bytes) snapshot=714686464
+		Virtual memory (bytes) snapshot=7464153088
+		Total committed heap usage (bytes)=568328192
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=56
+21/03/14 22:39:02 INFO mapreduce.ImportJobBase: Transferred 56 bytes in 27.3825 seconds (2.0451 bytes/sec)
+21/03/14 22:39:02 INFO mapreduce.ImportJobBase: Retrieved 4 records.
+hadoop@ubuntudev:~$ hdfs dfs -ls /user/input/emp6
+Found 5 items
+-rw-r--r--   1 hadoop supergroup          0 2021-03-14 22:39 /user/input/emp6/_SUCCESS
+-rw-r--r--   1 hadoop supergroup         14 2021-03-14 22:38 /user/input/emp6/part-m-00000
+-rw-r--r--   1 hadoop supergroup         14 2021-03-14 22:38 /user/input/emp6/part-m-00001
+-rw-r--r--   1 hadoop supergroup         14 2021-03-14 22:39 /user/input/emp6/part-m-00002
+-rw-r--r--   1 hadoop supergroup         14 2021-03-14 22:39 /user/input/emp6/part-m-00003
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp6/part-m-00000
+103,lmn,30000
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp6/part-m-00001
+104,pqr,40000
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp6/part-m-00002
+105,ghi,50000
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp6/part-m-00003
+106,stu,60000
+
+
+
+???????????????????????????????????????????????????????????????????????????????????
+hadoop@ubuntudev:~$ cat > marks
+
+Rohith,70,80,50
+Ajith,85,65,45
+Aruna,85,75,65
+kamal,90,80,60
+miller,75,85,95
+
+
+
+^C
+
+
+
+
+
+
+hadoop@ubuntudev:~$ sqoop import \
+> --connect jdbc:mysql://localhost/testdb \
+> --username root \
+> --password root \
+> --table emp -m 1 \
+> --target-dir /user/input/emp1 \
+> --incremental append \
+> --check-column eno \
+> --last-value 103
+Warning: /usr/lib/hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/lib/hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+21/03/14 22:44:11 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+21/03/14 22:44:11 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+21/03/14 22:44:11 INFO tool.CodeGenTool: Beginning code generation
+Sun Mar 14 22:44:11 PDT 2021 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+21/03/14 22:44:12 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 22:44:12 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 22:44:12 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop-ecosystem/hadoop-2.9.2
+Note: /tmp/sqoop-hadoop/compile/1f3e37cf4aa79d00164d026738413562/emp.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+21/03/14 22:44:13 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hadoop/compile/1f3e37cf4aa79d00164d026738413562/emp.jar
+21/03/14 22:44:13 INFO tool.ImportTool: Maximal id query for free form incremental import: SELECT MAX(`eno`) FROM emp
+21/03/14 22:44:13 ERROR tool.ImportTool: Encountered IOException running import job: java.io.IOException: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'eno' in 'field list'
+	at org.apache.sqoop.tool.ImportTool.initIncrementalConstraints(ImportTool.java:282)
+	at org.apache.sqoop.tool.ImportTool.importTable(ImportTool.java:404)
+	at org.apache.sqoop.tool.ImportTool.run(ImportTool.java:502)
+	at org.apache.sqoop.Sqoop.run(Sqoop.java:145)
+	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:76)
+	at org.apache.sqoop.Sqoop.runSqoop(Sqoop.java:181)
+	at org.apache.sqoop.Sqoop.runTool(Sqoop.java:220)
+	at org.apache.sqoop.Sqoop.runTool(Sqoop.java:229)
+	at org.apache.sqoop.Sqoop.main(Sqoop.java:238)
+Caused by: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'eno' in 'field list'
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)
+	at com.mysql.jdbc.Util.getInstance(Util.java:408)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:944)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
+	at com.mysql.jdbc.StatementImpl.executeQuery(StatementImpl.java:1365)
+	at org.apache.sqoop.tool.ImportTool.getMaxColumnId(ImportTool.java:198)
+	at org.apache.sqoop.tool.ImportTool.initIncrementalConstraints(ImportTool.java:269)
+	... 8 more
+
+hadoop@ubuntudev:~$ sqoop import \
+> --connect jdbc:mysql://localhost/testdb \
+> --username root \
+> --password root \
+> --table emp -m 1 \
+> --target-dir /user/input/emp1 \
+> --incremental append \
+> --check-column eno
+Warning: /usr/lib/hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /usr/lib/hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+21/03/14 22:45:08 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+21/03/14 22:45:08 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+21/03/14 22:45:08 INFO tool.CodeGenTool: Beginning code generation
+Sun Mar 14 22:45:08 PDT 2021 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+21/03/14 22:45:08 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 22:45:08 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `emp` AS t LIMIT 1
+21/03/14 22:45:08 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /usr/local/hadoop-ecosystem/hadoop-2.9.2
+Note: /tmp/sqoop-hadoop/compile/3f41e2d8f639cd4047bb2f6160c273fa/emp.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+21/03/14 22:45:10 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-hadoop/compile/3f41e2d8f639cd4047bb2f6160c273fa/emp.jar
+21/03/14 22:45:10 INFO tool.ImportTool: Maximal id query for free form incremental import: SELECT MAX(`eno`) FROM emp
+21/03/14 22:45:10 ERROR tool.ImportTool: Encountered IOException running import job: java.io.IOException: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'eno' in 'field list'
+	at org.apache.sqoop.tool.ImportTool.initIncrementalConstraints(ImportTool.java:282)
+	at org.apache.sqoop.tool.ImportTool.importTable(ImportTool.java:404)
+	at org.apache.sqoop.tool.ImportTool.run(ImportTool.java:502)
+	at org.apache.sqoop.Sqoop.run(Sqoop.java:145)
+	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:76)
+	at org.apache.sqoop.Sqoop.runSqoop(Sqoop.java:181)
+	at org.apache.sqoop.Sqoop.runTool(Sqoop.java:220)
+	at org.apache.sqoop.Sqoop.runTool(Sqoop.java:229)
+	at org.apache.sqoop.Sqoop.main(Sqoop.java:238)
+Caused by: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'eno' in 'field list'
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425)
+	at com.mysql.jdbc.Util.getInstance(Util.java:408)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:944)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
+	at com.mysql.jdbc.StatementImpl.executeQuery(StatementImpl.java:1365)
+	at org.apache.sqoop.tool.ImportTool.getMaxColumnId(ImportTool.java:198)
+	at org.apache.sqoop.tool.ImportTool.initIncrementalConstraints(ImportTool.java:269)
+	... 8 more
+
+hadoop@ubuntudev:~$ hdfs dfs -ls /user/input/emp1
+Found 5 items
+-rw-r--r--   1 hadoop supergroup          0 2021-03-14 22:08 /user/input/emp1/_SUCCESS
+-rw-r--r--   1 hadoop supergroup         38 2021-03-14 22:08 /user/input/emp1/part-m-00000
+-rw-r--r--   1 hadoop supergroup         19 2021-03-14 22:08 /user/input/emp1/part-m-00001
+-rw-r--r--   1 hadoop supergroup         19 2021-03-14 22:08 /user/input/emp1/part-m-00002
+-rw-r--r--   1 hadoop supergroup         38 2021-03-14 22:08 /user/input/emp1/part-m-00003
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp1/part-m-00000
+101,abc,10000,f,11
+102,xyz,20000,f,12
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp1/part-m-00001
+103,lmn,30000,m,12
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp1/part-m-00002
+104,pqr,40000,f,13
+hadoop@ubuntudev:~$ hdfs dfs -cat /user/input/emp1/part-m-00003
+105,ghi,50000,m,11
+106,stu,60000,m,11
+
+
